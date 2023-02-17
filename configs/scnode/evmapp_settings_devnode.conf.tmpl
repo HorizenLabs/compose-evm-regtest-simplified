@@ -1,0 +1,76 @@
+sparkz {
+    dataDir = /sidechain/datadir
+    logDir = /sidechain/logs
+
+    logInfo {
+       logFileName = "debug.log"
+       # levels (case insensitive): OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL
+       logFileLevel = "all"
+       logConsoleLevel = "debug"
+    }
+
+    restApi {
+        bindAddress = "0.0.0.0:9545"
+        timeout = 5s
+    }
+
+    network {
+        nodeName = "$SCNODE_NET_NODENAME"
+        bindAddress = "0.0.0.0:$SCNODE_NET_P2P_PORT"
+        declaredAddress = "$SCNODE_NET_DECLAREDADDRESS:$SCNODE_NET_P2P_PORT"
+        knownPeers = [$SCNODE_NET_KNOWNPEERS]
+        agentName = "2-Hop"$MAX_INCOMING_CONNECTIONS$MAX_OUTGOING_CONNECTIONS
+        magicBytes = [$SCNODE_NET_MAGICBYTES]
+        storageBackupInterval = 15m
+        storageBackupDelay = 5m
+    }
+
+    websocket {
+        address = ""
+        connectionTimeout = 100 milliseconds
+        reconnectionDelay = 60 seconds
+        reconnectionMaxAttempts = 50
+    }
+
+    withdrawalEpochCertificate {
+        submitterIsEnabled = $SCNODE_CERT_SUBMITTER_ENABLED
+        certificateSigningIsEnabled = $SCNODE_CERT_SIGNING_ENABLED
+        signersPublicKeys = [$SCNODE_CERT_SIGNERS_PUBKEYS]
+        signersThreshold = $SCNODE_CERT_SIGNERS_THRESHOLD
+        signersSecrets = [$SCNODE_CERT_SIGNERS_SECRETS]
+        mastersPublicKeys = [$SCNODE_CERT_MASTERS_PUBKEYS]
+        maxPks = $SCNODE_CERT_SIGNERS_MAXPKS
+        certProvingKeyFilePath = "/sidechain/snark_keys/marlin_snark_pk"
+        certVerificationKeyFilePath = "/sidechain/snark_keys/marlin_snark_vk"
+        circuitType = NaiveThresholdSignatureCircuitWithKeyRotation
+        certificateAutomaticFeeComputation = true
+    }
+
+    wallet {
+        seed = "$SCNODE_WALLET_SEED"
+        genesisSecrets = [$SCNODE_WALLET_GENESIS_SECRETS]
+        maxTxFee = $SCNODE_WALLET_MAXTX_FEE
+    }
+
+    csw {
+        cswProvingKeyFilePath = ""
+        cswVerificationKeyFilePath = ""
+    }
+
+    forger {
+        automaticForging = $SCNODE_FORGER_ENABLED
+        restrictForgers = $SCNODE_FORGER_RESTRICT
+        allowedForgersList = [$SCNODE_FORGER_ALLOWED_FORGERS]
+    }
+
+    genesis {
+        scGenesisBlockHex = "$SCNODE_GENESIS_BLOCKHEX"
+        scId = "$SCNODE_GENESIS_SCID"
+        powData = "$SCNODE_GENESIS_POWDATA"
+        mcBlockHeight = $SCNODE_GENESIS_MCBLOCKHEIGHT
+        mcNetwork = $SCNODE_GENESIS_MCNETWORK
+        isNonCeasing = $SCNODE_GENESIS_ISNONCEASING
+        withdrawalEpochLength = $SCNODE_GENESIS_WITHDRAWALEPOCHLENGTH
+        initialCumulativeCommTreeHash = "$SCNODE_GENESIS_COMMTREEHASH"
+    }
+}
